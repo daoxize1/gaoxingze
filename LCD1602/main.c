@@ -1,5 +1,6 @@
 //滚动显示“Hello world!”
 #include <STC12C5A60S2.H>
+#include <intrins.h>
 #define LCD_DB P0
 sbit LCD_EN = P2^7;
 sbit LCD_RS = P2^6;
@@ -12,6 +13,7 @@ void LCDWriteDat(unsigned char dat);
 void SetCursor(unsigned char x,unsigned char y);
 void ShowStr(unsigned char x,unsigned char y,char *str);
 void delay(int i);
+void LCDDelay();
 void main()
 {
     int i;
@@ -20,7 +22,8 @@ void main()
     {
         for(i = 1;i <= 16;i++)
         {
-            LCDWriteCmd(0x01);
+            LCDWriteCmd(0x01); //清屏指令
+            LCDDelay();
             ShowStr(16-i,0,"Hello World!");
             delay(20000);
         }
@@ -30,7 +33,7 @@ void main()
 void delay(int i)
 {
     int a;
-    for(a = 0;a < 5;a++)
+    for(a = 0;a < 10;a++)
     {
         while(i--);
     }
@@ -53,6 +56,7 @@ void LCDWaitReady()
     {
         LCD_EN = 1;
         sta = LCD_DB;
+        LCDDelay();
         LCD_EN = 0;
     }while(sta & 0x80);
 }
@@ -63,8 +67,10 @@ void LCDWriteCmd(unsigned char cmd)
     LCD_RS = 0;
     LCD_WR = 0;
     LCD_DB = cmd;
+    LCDDelay();
     LCD_EN = 1;
     LCD_EN = 0;
+    LCDDelay();
 }
 void LCDWriteDat(unsigned char dat)
 {
@@ -72,8 +78,10 @@ void LCDWriteDat(unsigned char dat)
     LCD_RS = 1;
     LCD_WR = 0;
     LCD_DB = dat;
+    LCDDelay();
     LCD_EN = 1;
     LCD_EN = 0;
+    LCDDelay();
 }
 
 void SetCursor(unsigned char x,unsigned char y)
@@ -95,4 +103,8 @@ void ShowStr(unsigned char x,unsigned char y,char *str)
     }
 }
 
-//LCD1602的刷新率太低，滚动显示效果不理想，还是静态显示好
+void LCDDelay()
+{
+    _nop_();_nop_();_nop_();_nop_();
+}
+//LCD1602显示有残影，滚动显示效果不理想，还是静态显示好
