@@ -17,7 +17,7 @@ void Delay2us()
 	i = 13;
 	while (--i);
 }
-bit GetDS18B20ACK()	//初始化
+bit GetDS18B20ACK()	//Initialize according to the timing diagram
 {
 	bit ack;
 	EA = 0;
@@ -34,8 +34,8 @@ bit GetDS18B20ACK()	//初始化
 void WriteDS18B20(unsigned char dat)
 {
 	unsigned char mask;
-	EA = 0;
-	for(mask=0x01;mask!=0x00;mask<<=1)
+	EA = 0;									//Close interrupt to reduce interference
+	for(mask=0x01;mask!=0x00;mask<<=1)		//Bitwise value according to the timing diagram
 	{
 		IO_DS18B20 = 0;
 		Delay2us();
@@ -43,15 +43,15 @@ void WriteDS18B20(unsigned char dat)
 		DelayX10us(6);
 		IO_DS18B20 = 1;
 	}
-	EA = 1;
+	EA = 1;									//Open interrupt
 }
 
-unsigned char ReadDS18B20()
+unsigned char ReadDS18B20()					//Read data
 {
 	unsigned char mask;
 	unsigned char dat;
-	EA = 0;
-	for(mask=0x01;mask!=0x00;mask<<=1)
+	EA = 0;									//Close interrupt to reduce interference
+	for(mask=0x01;mask!=0x00;mask<<=1)		//Bitwise value according to the timing diagram
 	{
 		IO_DS18B20 = 0;
 		Delay2us();
@@ -64,13 +64,13 @@ unsigned char ReadDS18B20()
 		DelayX10us(6);
 	}
 	
-	EA = 1;
+	EA = 1;									//Open interrupt
 	
 	return dat;
 	
 }
 
-bit StartDS18B20()
+bit StartDS18B20()						//Determine whether to accept data successfully	
 {
 	bit ack;
 	
@@ -84,10 +84,10 @@ bit StartDS18B20()
 	return ~ack;
 }
 
-bit GetDS18B20Temp(int *temp)
+bit GetDS18B20Temp(int *temp)			//Get temp
 {
 	bit ack;
-	unsigned char LSB,MSB;
+	unsigned char LSB,MSB;				//High 8 bits,low 8 bits
 	
 	ack = GetDS18B20ACK();
 	if(ack == 0)
@@ -96,7 +96,7 @@ bit GetDS18B20Temp(int *temp)
 		WriteDS18B20(0xBE);
 		LSB = ReadDS18B20();
 		MSB = ReadDS18B20();
-		*temp = ((int)MSB<<8)+LSB;
+		*temp = ((int)MSB<<8)+LSB;		//Turn double 8bits to 16bits
 	}
 	return ~ack;
 }

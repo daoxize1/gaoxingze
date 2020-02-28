@@ -1,4 +1,4 @@
-//波特率9600 16进制发送 发什么数字LCD上显示什么数字 （目前还不会接收字符串）
+//Baud rate 9600 and hex send
 #include <STC12C5A60S2.H>
 #include <string.h>
 int i = 0;
@@ -12,16 +12,16 @@ void main()
     while(1);
 }
 
-//这里用了STC-ISP的破特率计算器，没自己算
-void UartInit(void)		//9600bps@12.000MHz
+
+void UartInit(void)		//9600bps@32MHz
 {
-	PCON |= 0x80;		//使能波特率倍速位SMOD
-	SCON = 0x50;		//8位数据,可变波特率
-	AUXR |= 0x04;		//独立波特率发生器时钟为Fosc,即1T
-	BRT = 0xB2;		//设定独立波特率发生器重装值
-	AUXR |= 0x01;		//串口1选择独立波特率发生器为波特率发生器
-	AUXR |= 0x10;		//启动独立波特率发生器
-    ES = 1;
+	PCON &= 0x7F;		
+	SCON = 0x50;		
+	AUXR |= 0x04;		
+	BRT = 0x98;		   
+	AUXR |= 0x01;		
+	AUXR |= 0x10;		
+    ES = 1;             //Open Usart Interrupt and master Interrupt
     EA = 1;
 }
 
@@ -29,18 +29,11 @@ void UartInit(void)		//9600bps@12.000MHz
 void UartInterrupt() interrupt 4
 {
     char str[20];
-    /*do
-    {
-        str[i] = SBUF;
-        i++;
-    }while(SBUF!="\0");
-    RI = 0;
-    i = 0;*/
     str[0] = SBUF + '0';
     RI = 0;
     str[1] = '\0';
-    ShowStr(0,0,str);
+    ShowStr(0,0,str);   //Show received char
     SBUF = 1;
-    while(!TI);
+    while(!TI);         //Wait sending
     TI = 0;
 }

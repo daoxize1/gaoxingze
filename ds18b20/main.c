@@ -12,9 +12,9 @@ int i = 0;
 
 void main()
 {
-	bit res;
+	bit res;				//The signal of successfully get the temperature
 	int temp;
-	int intT,decT;
+	int intT,decT;			//First and last eight bits of temperature
 	unsigned char len;
 	unsigned char str[12];
 	EA = 1;
@@ -26,8 +26,8 @@ void main()
 		if(flag1s)
 		{
 			flag1s = 0;
-			res = GetDS18B20Temp(&temp);
-			if(res)
+			res = GetDS18B20Temp(&temp);		//Get the temperature
+			if(res)								//If success,Converting temp to strings
 			{
 				intT = temp >> 4;
 				decT = temp & 0xf;
@@ -40,36 +40,36 @@ void main()
 					str[len++] = ' ';
 				}
 				str[len] = '\0';
-				LCDShowStr(0,0,str);
+				LCDShowStr(0,0,str);			//Display temperature
 			}
-			else
+			else								//If failed,display "error"
 			{
-				LCDShowStr(0,0,"error!");
+				LCDShowStr(0,0,"error!");		
 			}
 			StartDS18B20();
 		}
 	}
 }
-unsigned char IntToString(unsigned char *str,int dat)
+unsigned char IntToString(unsigned char *str,int dat)	//Turn integer into string
 {
 	signed char i = 0;
 	unsigned char len = 0;
 	unsigned char buf[6];
 	
-	if(dat < 0)
+	if(dat < 0)				//Determine the + and - of temperature
 	{
 		dat = -dat;
 		*str++ = '-';
 		len++;
 	}
-	do
+	do						//Put every bit of temperature into buffer
 	{
 		buf[i++] = dat % 10;
 		dat = dat / 10;
 		
 	}while(dat > 0);
 	len = len + i;
-	while(i-- > 0)
+	while(i-- > 0)			//Trun char to int
 	{
 		*str++ = buf[i] + '0';
 	}
@@ -78,19 +78,19 @@ unsigned char IntToString(unsigned char *str,int dat)
 	return len;
 		
 }
-void Timer0Init()
+void Timer0Init()		//10ms@32M 12T with openning Timer0 interrupt
 {
-	AUXR &= 0x7F;		//定时器时钟12T模式
-	TMOD &= 0xF0;		//设置定时器模式
-	TMOD |= 0x01;		//设置定时器模式
-	TL0 = 0xD5;		//设置定时初值
-	TH0 = 0x97;		//设置定时初值
-	TF0 = 0;		//清除TF0标志
-	TR0 = 1;		//定时器0开始计时
+	AUXR &= 0x7F;		
+	TMOD &= 0xF0;		
+	TMOD |= 0x01;		
+	TL0 = 0xD5;		
+	TH0 = 0x97;		
+	TF0 = 0;		
+	TR0 = 1;		
 	ET0 = 1;
 }
 
-void InterruptTimer0() interrupt 1
+void InterruptTimer0() interrupt 1	//Refresh temperature every 100 interruptions(1s)
 {
 	TF0 = 0;
 	TL0 = 0xD5;
@@ -100,6 +100,6 @@ void InterruptTimer0() interrupt 1
 	if(i >= 100)
 	{
 		i = 0;
-		flag1s = 1;
+		flag1s = 1;		//The flag of Refreshing
 	}
 }

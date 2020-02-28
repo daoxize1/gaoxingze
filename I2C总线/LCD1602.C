@@ -1,4 +1,3 @@
-//¹ö¶¯ÏÔÊ¾¡°Hello world!¡±
 #include <STC12C5A60S2.H>
 #include <intrins.h>
 #define LCD_DB P0
@@ -12,10 +11,10 @@ void LCDWriteCmd(unsigned char cmd);
 void LCDWriteDat(unsigned char dat);
 void SetCursor(unsigned char x,unsigned char y);
 void ShowStr(unsigned char x,unsigned char y,char *str);
-void LCDDelay();
+void LCDDelay();    //Too fast will cause LCD to fail to display,so it needs delay
 
 
-void LCDInit()
+void LCDInit()          //LCD1602 initialization
 {
     LCDWriteCmd(0x38);
     LCDWriteCmd(0x0c);
@@ -25,7 +24,7 @@ void LCDInit()
 
 void LCDWaitReady()
 {
-    unsigned char sta;
+    unsigned char sta;      //Indicates the current status of the LCD(busy or free)
     LCD_RS = 0;
     LCD_WR = 1;
     LCD_DB = 0xff;
@@ -35,12 +34,12 @@ void LCDWaitReady()
         sta = LCD_DB;
         LCDDelay();
         LCD_EN = 0;
-    }while(sta & 0x80);
+    }while(sta & 0x80);     //if (sta & 0x80) = 0,lcd is free,so continue
 }
 
 void LCDWriteCmd(unsigned char cmd)
 {
-    LCDWaitReady();
+    LCDWaitReady();      //Waiting for the LCD to be free
     LCD_RS = 0;
     LCD_WR = 0;
     LCD_DB = cmd;
@@ -51,7 +50,7 @@ void LCDWriteCmd(unsigned char cmd)
 }
 void LCDWriteDat(unsigned char dat)
 {
-    LCDWaitReady();
+    LCDWaitReady();     //Waiting for the LCD to be free
     LCD_RS = 1;
     LCD_WR = 0;
     LCD_DB = dat;
@@ -65,16 +64,16 @@ void SetCursor(unsigned char x,unsigned char y)
 {
     unsigned char addr;
     if(y == 0)
-        addr = 0x00 + x;
+        addr = 0x00 + x;        //0x00 is first row
     else
-        addr = 0x40 + x;
+        addr = 0x40 + x;        //0x40 is first row
     LCDWriteCmd(addr | 0x80);
 }
   
 void ShowStr(unsigned char x,unsigned char y,char *str)
 {
     SetCursor(x,y);
-    while(*str!='\0')
+    while(*str!='\0')           //Show each char of the string
     {
         LCDWriteDat(*str++);
     }
@@ -82,5 +81,5 @@ void ShowStr(unsigned char x,unsigned char y,char *str)
 
 void LCDDelay()
 {
-    
+    _nop_();_nop_();_nop_();_nop_(); _nop_();_nop_();_nop_();_nop_();
 }

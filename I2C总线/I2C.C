@@ -9,14 +9,14 @@ void I2CStop();
 bit I2CWrite(unsigned char dat);
 bit I2CAddressing(unsigned char addr);
 
-void I2Cdelay()
+void I2Cdelay()			
 {
 	int i;
     i = 37;
     while(--i);
     
 }
-void I2CStart()
+void I2CStart()		//Send starting timing				
 {
 	I2C_SDA = 1;
 	I2C_SCL = 1;
@@ -25,7 +25,7 @@ void I2CStart()
 	I2Cdelay();
 	I2C_SCL = 0;
 }
-void I2CStop()
+void I2CStop()		//Send stop timing
 {
 	I2C_SDA = 0;
 	I2C_SCL = 0;
@@ -34,11 +34,11 @@ void I2CStop()
 	I2Cdelay();
 	I2C_SDA = 1;
 }
-bit I2CWrite(unsigned char dat)
+bit I2CWrite(unsigned char dat)		//Send data timing
 {
 	bit ack;
 	unsigned char mask;
-	for(mask = 0x80;mask!=0x00;mask>>=1)
+	for(mask = 0x80;mask!=0x00;mask>>=1)	//Bitwise value
 	{
 		if((mask&dat)==0)
 			I2C_SDA = 0;
@@ -52,17 +52,17 @@ bit I2CWrite(unsigned char dat)
 	I2C_SDA = 1;
 	I2Cdelay();
 	I2C_SCL = 1;
-	ack = I2C_SDA;
+	ack = I2C_SDA;		//Read return signal			
 	I2Cdelay();
 	I2C_SCL = 0;
 	
 	return ack;
 }
-bit I2CAddressing(unsigned char addr)
+bit I2CAddressing(unsigned char addr)	
 {
 	bit ack;
 	I2CStart();
 	ack = I2CWrite(addr<<1);
 	I2CStop();
-	return ack;
+	return ack;			//Read addressing results
 }

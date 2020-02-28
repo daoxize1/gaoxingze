@@ -11,7 +11,7 @@ void LCDWaitReady();
 void LCDSetCursor(unsigned char x,unsigned char y);
 void LCDShowStr(unsigned char x,unsigned char y,char *str);
 void LCDShowChar(unsigned char x,unsigned char y,char a);
-void LCDDelay();
+void LCDDelay();        //Too fast will cause LCD to fail to display,so it needs delay
 
 void LCDDelay()
 {
@@ -19,7 +19,7 @@ void LCDDelay()
     i = 38;
     while(i--);
 }
-void LCDInit()
+void LCDInit()          //LCD1602 initialization
 {
     LCDWriteCmd(0x38);
     LCDWriteCmd(0x0c);
@@ -28,7 +28,7 @@ void LCDInit()
 }
 void LCDWaitReady()
 {
-    unsigned char sta;
+    unsigned char sta;      //Indicates the current status of the LCD(busy or free)
     LCD_DB = 0xff;
     LCD_RS = 0;
     LCD_WR = 1;
@@ -37,11 +37,12 @@ void LCDWaitReady()
         LCD_EN = 1;
         sta = LCD_DB;
         LCD_EN = 0;
-    }while(sta & 0x80);
+    }while(sta & 0x80);     //if (sta & 0x80) = 0,lcd is free,so continue
+
 }
 void LCDWriteCmd(unsigned char cmd)
 {
-    LCDWaitReady();
+    LCDWaitReady();     //Waiting for the LCD to be free
     LCD_RS = 0;
     LCD_WR = 0;
     LCD_DB = cmd;
@@ -51,7 +52,7 @@ void LCDWriteCmd(unsigned char cmd)
 }
 void LCDWriteDat(unsigned char dat)
 {
-    LCDWaitReady();
+    LCDWaitReady();     //Waiting for the LCD to be free
     LCD_RS = 1;
     LCD_WR = 0;
     LCD_DB = dat;
@@ -63,20 +64,20 @@ void LCDSetCursor(unsigned char x,unsigned char y)
 {
     unsigned char addr;
     if(y == 0)
-        addr = x + 0x00;
+        addr = x + 0x00;    //0x00 is first row
     else
-        addr = x + 0x40;
+        addr = x + 0x40;    //0x40 is second row
     LCDWriteCmd(addr | 0x80);
 }
-void LCDShowStr(unsigned char x,unsigned char y,char *str)
+void LCDShowStr(unsigned char x,unsigned char y,char *str)      //Display string
 {
     LCDSetCursor(x,y);
-    while(*str!='\0')
+    while(*str!='\0')   //Show each char of the string
 	{
 		LCDWriteDat(*str++);
 	}
 }
-void LCDShowChar(unsigned char x,unsigned char y,char a)
+void LCDShowChar(unsigned char x,unsigned char y,char a)        //Display char
 {
     LCDSetCursor(x,y);
     LCDWriteDat(a);

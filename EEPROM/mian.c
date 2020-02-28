@@ -8,9 +8,9 @@ void main()
 {
     unsigned char dat;
     LCDInit();
-    dat = EEPROMRead(0x02);
+    dat = EEPROMRead(0x02);         //Read data 0f 0x02
     LCDShowChar(0,0,dat+'0');
     dat++;
-    EEPROMWrite(0x02,dat);
+    EEPROMWrite(0x02,dat);          //Write data to 0x02
     while(1);
 }
