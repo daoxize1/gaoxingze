@@ -1,0 +1,63 @@
+C51 COMPILER V9.57.0.0   CLOCK                                                             03/04/2020 18:01:16 PAGE 1   
+
+
+C51 COMPILER V9.57.0.0, COMPILATION OF MODULE CLOCK
+OBJECT MODULE PLACED IN .\Objects\clock.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE clock.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\clo
+                    -ck.lst) OBJECT(.\Objects\clock.obj)
+
+line level    source
+
+   1          #include <STC12C5A60S2.H>
+   2          
+   3          unsigned char Time[3]={23,59,29};
+   4          unsigned int i = 0;
+   5          void ClockInit()//10ms@32MHz
+   6          {               
+   7   1              TMOD &= 0xF0;           
+   8   1              TMOD |= 0x01;           
+   9   1              TL0 = 0xD5;             
+  10   1              TH0 = 0x97;             
+  11   1              TF0 = 0;                
+  12   1              TR0 = 1;                
+  13   1              ET0 = 1;
+  14   1      }
+  15          
+  16          void Timer0Interrupt() interrupt 1
+  17          {
+  18   1              i++;
+  19   1              if(i == 100)
+  20   1              {
+  21   2                      Time[2]++;
+  22   2                      i = 0;
+  23   2                      if(Time[2] == 60)
+  24   2                      {
+  25   3                              Time[1]++;
+  26   3                              Time[2] = 0;
+  27   3                              if(Time[1] = 60)
+*** WARNING C276 IN LINE 27 OF clock.c: constant in condition expression
+  28   3                              {
+  29   4                                      Time[0]++;
+  30   4                                      Time[1] = 0;
+  31   4                                      if(Time[0] == 24)
+  32   4                                      {
+  33   5                                              Time[0] = 0;
+  34   5                                      }
+  35   4                              }
+  36   3                      }
+  37   2              }
+  38   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     74    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      5    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)
