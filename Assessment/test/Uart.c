@@ -1,6 +1,8 @@
 #include <STC12C5A60S2.H>
 char Output[40]={"Please input password!"};
 char Input[30];
+char Password[6]={1,2,3,4,5,6};
+unsigned char step = 0;
 void UartInit(void)		//9600bps@32MHz
 {
 	PCON |= 0x80;		//使能波特率倍速位SMOD
@@ -15,15 +17,44 @@ void UartInit(void)		//9600bps@32MHz
 void UartInterrupt() interrupt 4
 {
 	unsigned char i = 0;
-	TI = 0;
-	do
+	unsigned char RecDat;
+	if(step == 0)
 	{
-		SBUF = Output[i];
+		do
+		{
+			SBUF = Output[i];
+			while(!TI);
+			TI = 0;
+			i++;
+		}while(Output[i]!='\0');
+		SBUF = '\n';
 		while(!TI);
 		TI = 0;
-		i++;
-	}while(Output[i]!='\0');
-	Input[0] = SBUF;
-	RI = 0;
-
+		
+		i = 0;
+		step++;
+	}
+	if(step == 1)
+	{
+		do
+		{
+			Input[i] = SBUF;
+			RI = 0;
+			i++;
+		}while(SBUF!='\0');
+		Input[i] = '\0';
+		i = 0;
+		step++;
+	}
+	if(step == 2)
+	{
+		do
+		{
+			SBUF = Input[i];
+			while(!TI);
+			TI = 0;
+			i++;
+		}while(Input[i]!='\0');
+		i = 0;
+	}
 }

@@ -4,5 +4,6 @@ void main()
 {
 	UartInit();
 	EA = 1;
+	TI = 0;
 	while(1);
 }

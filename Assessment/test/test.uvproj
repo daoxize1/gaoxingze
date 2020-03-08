@@ -384,6 +384,11 @@
               <FileType>1</FileType>
               <FilePath>.\Uart.c</FilePath>
             </File>
+            <File>
+              <FileName>DigTube.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\DigTube.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

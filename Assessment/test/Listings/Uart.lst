@@ -1,4 +1,4 @@
-C51 COMPILER V9.57.0.0   UART                                                              03/04/2020 18:42:12 PAGE 1   
+C51 COMPILER V9.57.0.0   UART                                                              03/06/2020 19:29:49 PAGE 1   
 
 
 C51 COMPILER V9.57.0.0, COMPILATION OF MODULE UART
@@ -11,43 +11,77 @@ line level    source
    1          #include <STC12C5A60S2.H>
    2          char Output[40]={"Please input password!"};
    3          char Input[30];
-   4          void UartInit(void)             //9600bps@32MHz
-   5          {
-   6   1              PCON |= 0x80;           //使能波特率倍速位SMOD
-   7   1              SCON = 0x50;            //8位数据,可变波特率
-   8   1              AUXR |= 0x04;           //独立波特率发生器时钟为Fosc,即1T
-   9   1              BRT = 0x30;             //设定独立波特率发生器重装值
-  10   1              AUXR |= 0x01;           //串口1选择独立波特率发生器为波特率发生器
-  11   1              AUXR |= 0x10;           //启动独立波特率发生器
-  12   1              ES = 1;
-  13   1      }
-  14          
-  15          void UartInterrupt() interrupt 4
-  16          {
-  17   1              unsigned char i = 0;
-  18   1              TI = 0;
-  19   1              do
-  20   1              {
-  21   2                      SBUF = Output[i];
-  22   2                      while(!TI);
-  23   2                      TI = 0;
-  24   2                      i++;
-  25   2              }while(Output[i]!='\0');
-  26   1              Input[0] = SBUF;
-  27   1              RI = 0;
-  28   1      
-  29   1      }
+   4          char Password[6]={1,2,3,4,5,6};
+   5          unsigned char step = 0;
+   6          void UartInit(void)             //9600bps@32MHz
+   7          {
+   8   1              PCON |= 0x80;           //使能波特率倍速位SMOD
+   9   1              SCON = 0x50;            //8位数据,可变波特率
+  10   1              AUXR |= 0x04;           //独立波特率发生器时钟为Fosc,即1T
+  11   1              BRT = 0x30;             //设定独立波特率发生器重装值
+  12   1              AUXR |= 0x01;           //串口1选择独立波特率发生器为波特率发生器
+  13   1              AUXR |= 0x10;           //启动独立波特率发生器
+  14   1              ES = 1;
+  15   1      }
+  16          
+  17          void UartInterrupt() interrupt 4
+  18          {
+  19   1              unsigned char i = 0;
+  20   1              unsigned char RecDat;
+  21   1              if(step == 0)
+  22   1              {
+  23   2                      do
+  24   2                      {
+  25   3                              SBUF = Output[i];
+  26   3                              while(!TI);
+  27   3                              TI = 0;
+  28   3                              i++;
+  29   3                      }while(Output[i]!='\0');
+  30   2                      SBUF = '\n';
+  31   2                      while(!TI);
+  32   2                      TI = 0;
+  33   2                      
+  34   2                      i = 0;
+  35   2                      step++;
+  36   2              }
+  37   1              if(step == 1)
+  38   1              {
+  39   2                      do
+  40   2                      {
+  41   3                              Input[i] = SBUF;
+  42   3                              RI = 0;
+  43   3                              i++;
+  44   3                      }while(SBUF!='\0');
+  45   2                      Input[i] = '\0';
+  46   2                      i = 0;
+  47   2                      step++;
+  48   2              }
+  49   1              if(step == 2)
+  50   1              {
+  51   2                      do
+  52   2                      {
+  53   3                              SBUF = Input[i];
+  54   3                              while(!TI);
+C51 COMPILER V9.57.0.0   UART                                                              03/06/2020 19:29:49 PAGE 2   
+
+  55   3                              TI = 0;
+  56   3                              i++;
+  57   3                      }while(Input[i]!='\0');
+  58   2                      i = 0;
+  59   2              }
+  60   1      }
+*** WARNING C280 IN LINE 20 OF Uart.c: 'RecDat': unreferenced local variable
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     70    ----
+   CODE SIZE        =    133    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =     70    ----
+   DATA SIZE        =     77       1
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
 
 
-C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)
