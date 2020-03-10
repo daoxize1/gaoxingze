@@ -26,6 +26,7 @@ void interruptLED() interrupt 3
 {
 	TL1 = 0x2B;
 	TH1 = 0xEB;
+	TR1 = 1;
     P0 = 0x00;
     switch(j)
     {

@@ -30,8 +30,8 @@ void LCDWaitReady()
 {
 	unsigned char sta;
 	LCD_DB = 0xff;
-	LCD_RS = 1;
-	LCD_WR = 0;
+	LCD_RS = 0;
+	LCD_WR = 1;
 	do
 	{
 		LCD_EN = 1;

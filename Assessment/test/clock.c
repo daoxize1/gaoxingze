@@ -16,6 +16,9 @@ void ClockInit()//10ms@32MHz
 void Timer0Interrupt() interrupt 1
 {
 	i++;
+	TL0 = 0xD5;
+	TH0 = 0x97;	
+	TR0 = 1;
 	if(i == 100)
 	{
 		Time[2]++;

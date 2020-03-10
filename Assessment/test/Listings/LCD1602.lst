@@ -1,4 +1,4 @@
-C51 COMPILER V9.57.0.0   LCD1602                                                           03/06/2020 19:10:46 PAGE 1   
+C51 COMPILER V9.57.0.0   LCD1602                                                           03/09/2020 21:21:30 PAGE 1   
 
 
 C51 COMPILER V9.57.0.0, COMPILATION OF MODULE LCD1602
@@ -40,8 +40,8 @@ line level    source
   30          {
   31   1              unsigned char sta;
   32   1              LCD_DB = 0xff;
-  33   1              LCD_RS = 1;
-  34   1              LCD_WR = 0;
+  33   1              LCD_RS = 0;
+  34   1              LCD_WR = 1;
   35   1              do
   36   1              {
   37   2                      LCD_EN = 1;
@@ -62,7 +62,7 @@ line level    source
   52   1              LCD_EN = 0;
   53   1      }
   54          
-C51 COMPILER V9.57.0.0   LCD1602                                                           03/06/2020 19:10:46 PAGE 2   
+C51 COMPILER V9.57.0.0   LCD1602                                                           03/09/2020 21:21:30 PAGE 2   
 
   55          void LCDWriteDat(unsigned char dat)
   56          {

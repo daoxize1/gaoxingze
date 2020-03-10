@@ -1,4 +1,4 @@
-C51 COMPILER V9.57.0.0   CLOCK                                                             03/06/2020 19:10:46 PAGE 1   
+C51 COMPILER V9.57.0.0   CLOCK                                                             03/09/2020 21:09:54 PAGE 1   
 
 
 C51 COMPILER V9.57.0.0, COMPILATION OF MODULE CLOCK
@@ -26,31 +26,34 @@ line level    source
   16          void Timer0Interrupt() interrupt 1
   17          {
   18   1              i++;
-  19   1              if(i == 100)
-  20   1              {
-  21   2                      Time[2]++;
-  22   2                      i = 0;
-  23   2                      if(Time[2] == 60)
-  24   2                      {
-  25   3                              Time[1]++;
-  26   3                              Time[2] = 0;
-  27   3                              if(Time[1] = 60)
-*** WARNING C276 IN LINE 27 OF clock.c: constant in condition expression
-  28   3                              {
-  29   4                                      Time[0]++;
-  30   4                                      Time[1] = 0;
-  31   4                                      if(Time[0] == 24)
-  32   4                                      {
-  33   5                                              Time[0] = 0;
-  34   5                                      }
-  35   4                              }
-  36   3                      }
-  37   2              }
-  38   1      }
+  19   1              TL0 = 0xD5;
+  20   1              TH0 = 0x97;     
+  21   1              TR0 = 1;
+  22   1              if(i == 100)
+  23   1              {
+  24   2                      Time[2]++;
+  25   2                      i = 0;
+  26   2                      if(Time[2] == 60)
+  27   2                      {
+  28   3                              Time[1]++;
+  29   3                              Time[2] = 0;
+  30   3                              if(Time[1] = 60)
+*** WARNING C276 IN LINE 30 OF clock.c: constant in condition expression
+  31   3                              {
+  32   4                                      Time[0]++;
+  33   4                                      Time[1] = 0;
+  34   4                                      if(Time[0] == 24)
+  35   4                                      {
+  36   5                                              Time[0] = 0;
+  37   5                                      }
+  38   4                              }
+  39   3                      }
+  40   2              }
+  41   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     74    ----
+   CODE SIZE        =     84    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

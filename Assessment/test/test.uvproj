@@ -389,6 +389,11 @@
               <FileType>1</FileType>
               <FilePath>.\DigTube.c</FilePath>
             </File>
+            <File>
+              <FileName>Keyboard.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Keyboard.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
