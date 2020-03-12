@@ -1,7 +1,7 @@
 #include <STC12C5A60S2.H>
-sbit AddrA = P2^2;
-sbit AddrB = P2^3;
-sbit AddrC = P2^4;
+sbit AddrA = P1^0;
+sbit AddrB = P1^1;
+sbit AddrC = P1^2;
 unsigned char j = 0;
 unsigned char code LedChar[]={
 	0x3f,0x06,0x5b,0x4f,
@@ -30,14 +30,14 @@ void interruptLED() interrupt 3
     P0 = 0x00;
     switch(j)
     {
-        case 0:AddrA = 1;AddrB = 1;AddrC = 1;P0 = LedChar[0];j++;break;
-        case 1:AddrA = 0;AddrB = 1;AddrC = 1;P0 = LedChar[0];j++;break;
-        case 2:AddrA = 1;AddrB = 0;AddrC = 1;P0 = LedChar[0];j++;break;
-        case 3:AddrA = 0;AddrB = 0;AddrC = 1;P0 = LedChar[0];j++;break;
-        case 4:AddrA = 1;AddrB = 1;AddrC = 0;P0 = LedChar[0];j++;break;
-        case 5:AddrA = 0;AddrB = 1;AddrC = 0;P0 = LedChar[0];j++;break;
-        case 6:AddrA = 1;AddrB = 0;AddrC = 0;P0 = LedChar[0];j++;break;
-        case 7:AddrA = 0;AddrB = 0;AddrC = 0;P0 = LedChar[0];j=0;break;
+        case 0:AddrA = 1;AddrB = 1;AddrC = 1;P2 = LedChar[0];j++;break;
+        case 1:AddrA = 0;AddrB = 1;AddrC = 1;P2 = LedChar[0];j++;break;
+        case 2:AddrA = 1;AddrB = 0;AddrC = 1;P2 = LedChar[0];j++;break;
+        case 3:AddrA = 0;AddrB = 0;AddrC = 1;P2 = LedChar[0];j++;break;
+        case 4:AddrA = 1;AddrB = 1;AddrC = 0;P2 = LedChar[0];j++;break;
+        case 5:AddrA = 0;AddrB = 1;AddrC = 0;P2 = LedChar[0];j++;break;
+        case 6:AddrA = 1;AddrB = 0;AddrC = 0;P2 = LedChar[0];j++;break;
+        case 7:AddrA = 0;AddrB = 0;AddrC = 0;P2 = LedChar[0];j=0;break;
         default:break;
     }
 }

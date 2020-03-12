@@ -19,7 +19,7 @@ void UartInit(void)		//9600bps@32MHz
 void UartRecString(char Input[])
 {
 	unsigned char length = 0;
-	unsigned int TimeOut = 1000;
+	unsigned int TimeOut = 100000;
 	while(TimeOut--)
 	{
 		if(RI != 0)
@@ -33,24 +33,34 @@ void UartRecString(char Input[])
 }
 void UartSentString(char *str)
 {
+	ES = 0;
 	while(*str!='\0')
 	{
 		SBUF = *str++;
 		while(!TI);
 		TI = 0;
 	}
+	ES = 1;
 }
 void UartInterrupt() interrupt 4
 {
 	unsigned char i = 0;
+	unsigned char a = 1;
 	UartRecString(Input);
-	if(strcmp("123456\r\n",Input)==1)
+	if(step == 0)
+	{
+		a = strcmp("123456",Input);
+		step++;
+	}
+	if(a == 0)
 	{
 		UartSentString("Welcome to you!\r\n");
 		flag = 1;
 	}
-	else 
+	if(a != 0 && flag != 1)
 	{
 		UartSentString("The password is error! Please input again!\r\n");
 	}
+	
+	
 }
