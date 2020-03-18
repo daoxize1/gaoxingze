@@ -1,4 +1,4 @@
-C51 COMPILER V9.57.0.0   CLOCK                                                             03/12/2020 01:00:34 PAGE 1   
+C51 COMPILER V9.57.0.0   CLOCK                                                             03/18/2020 21:48:14 PAGE 1   
 
 
 C51 COMPILER V9.57.0.0, COMPILATION OF MODULE CLOCK
@@ -10,9 +10,9 @@ line level    source
 
    1          #include <STC12C5A60S2.H>
    2          extern char Interface;
-   3          unsigned char Time[3]={23,59,29};
-   4          unsigned char Alarm[3]={00,01,00};
-   5          char TimeDisplay[8];
+   3          char Time[3]={23,59,29};
+   4          char Alarm[3]={00,01,00};
+   5          char TimeDisplay[9]={0};
    6          unsigned int i = 0;
    7          extern void LCDShowStr(unsigned char x,unsigned char y,char *str);
    8          
@@ -27,92 +27,83 @@ line level    source
   17   1              ET0 = 1;
   18   1      }
   19          
-  20          void CharToString(unsigned char Array);
+  20          void CharToString(char Arra[])
   21          {
-*** ERROR C141 IN LINE 21 OF clock.c: syntax error near '{'
-  22                  TimeDisplay[0] = Array[0]/10+'0';
-*** ERROR C136 IN LINE 22 OF clock.c: invalid dimension size: [0]
-*** ERROR C231 IN LINE 22 OF clock.c: 'TimeDisplay': redefinition
-*** ERROR C202 IN LINE 22 OF clock.c: 'Array': undefined identifier
-  23                  TimeDisplay[1] = Array[0]%10+'0';
-*** ERROR C279 IN LINE 23 OF clock.c: 'TimeDisplay': multiple initialization
-*** ERROR C202 IN LINE 23 OF clock.c: 'Array': undefined identifier
-  24                  TimeDisplay[2] = '-';
-*** ERROR C279 IN LINE 24 OF clock.c: 'TimeDisplay': multiple initialization
-*** ERROR C231 IN LINE 24 OF clock.c: 'TimeDisplay': redefinition
-  25                  TimeDisplay[3] = Array[0]/10+'0';
-*** ERROR C279 IN LINE 25 OF clock.c: 'TimeDisplay': multiple initialization
-*** ERROR C231 IN LINE 25 OF clock.c: 'TimeDisplay': redefinition
-*** ERROR C202 IN LINE 25 OF clock.c: 'Array': undefined identifier
-  26                  TimeDisplay[4] = Array[0]%10+'0';
-*** ERROR C279 IN LINE 26 OF clock.c: 'TimeDisplay': multiple initialization
-*** ERROR C231 IN LINE 26 OF clock.c: 'TimeDisplay': redefinition
-*** ERROR C202 IN LINE 26 OF clock.c: 'Array': undefined identifier
-  27                  TimeDisplay[5] = '-';
-*** ERROR C279 IN LINE 27 OF clock.c: 'TimeDisplay': multiple initialization
-*** ERROR C231 IN LINE 27 OF clock.c: 'TimeDisplay': redefinition
-  28                  TimeDisplay[6] = Array[0]/10+'0';
-*** ERROR C279 IN LINE 28 OF clock.c: 'TimeDisplay': multiple initialization
-*** ERROR C231 IN LINE 28 OF clock.c: 'TimeDisplay': redefinition
-*** ERROR C202 IN LINE 28 OF clock.c: 'Array': undefined identifier
-  29                  TimeDisplay[7] = Array[0]%10+'0';
-*** ERROR C279 IN LINE 29 OF clock.c: 'TimeDisplay': multiple initialization
-*** ERROR C231 IN LINE 29 OF clock.c: 'TimeDisplay': redefinition
-*** ERROR C202 IN LINE 29 OF clock.c: 'Array': undefined identifier
-  30          }
-*** ERROR C141 IN LINE 30 OF clock.c: syntax error near '}'
-  31          
-C51 COMPILER V9.57.0.0   CLOCK                                                             03/12/2020 01:00:34 PAGE 2   
-
-  32          void DisplayInterfaceA()
-  33          {
-  34   1              LCDShowStr(0,0,"A");
-  35   1              CharToString(Time);
-  36   1              LCDShowStr(0,2,TimeDisplay);
-  37   1      }
-  38          
+  22   1              TimeDisplay[0] = Arra[0]/10+'0';
+  23   1              TimeDisplay[1] = Arra[0]%10+'0';
+  24   1              TimeDisplay[2] = '-';
+  25   1              TimeDisplay[3] = Arra[1]/10+'0';
+  26   1              TimeDisplay[4] = Arra[1]%10+'0';
+  27   1              TimeDisplay[5] = '-';
+  28   1              TimeDisplay[6] = Arra[2]/10+'0';
+  29   1              TimeDisplay[7] = Arra[2]%10+'0';
+  30   1              TimeDisplay[8] = '\0';
+  31   1      }
+  32          
+  33          void DisplayInterfaceA()
+  34          {
+  35   1              LCDShowStr(0,0,"A");
+  36   1              CharToString(Time);
+  37   1              LCDShowStr(0,1,TimeDisplay);
+  38   1      }
   39          
-  40          void DisplayInterfaceB()
-  41          {
-  42   1              LCDShowStr(0,0,"B");
-  43   1              CharToString(Alarm);
-  44   1              LCDShowStr(0,2,TimeDisplay);
-  45   1      }
-  46          
+  40          
+  41          void DisplayInterfaceB()
+  42          {
+  43   1              LCDShowStr(0,0,"B");
+  44   1              CharToString(Alarm);
+  45   1              LCDShowStr(0,1,TimeDisplay);
+  46   1      }
   47          
-  48          void Timer0Interrupt() interrupt 1
-  49          {
-  50   1              i++;
-  51   1              TL0 = 0xD5;
-  52   1              TH0 = 0x97;     
-  53   1              TR0 = 1;
-  54   1              if(i == 100)
-  55   1              {
-  56   2                      Time[2]++;
-  57   2                      i = 0;
-  58   2                      if(Time[2] == 60)
-  59   2                      {
-  60   3                              Time[1]++;
-  61   3                              Time[2] = 0;
-  62   3                              if(Time[1] = 60)
-  63   3                              {
-  64   4                                      Time[0]++;
-  65   4                                      Time[1] = 0;
-  66   4                                      if(Time[0] == 24)
-  67   4                                      {
-  68   5                                              Time[0] = 0;
-  69   5                                      }
-  70   4                              }
-  71   3                      }
-  72   2              }
-  73   1              if(i == 10&&Interface == 'A')
-  74   1              {
-  75   2                      DisplayInterfaceA();
-  76   2              }
-  77   1              if(i == 10&&Interface == 'B')
-  78   1              {
-  79   2                      DisplayInterfaceB();
-  80   2              }
-  81   1      }
+  48          
+  49          void Timer0Interrupt() interrupt 1
+  50          {
+  51   1              i++;
+  52   1              TL0 = 0xD5;
+  53   1              TH0 = 0x97;     
+  54   1              TR0 = 1;
+C51 COMPILER V9.57.0.0   CLOCK                                                             03/18/2020 21:48:14 PAGE 2   
 
-C51 COMPILATION COMPLETE.  0 WARNING(S),  23 ERROR(S)
+  55   1              if(i == 100)
+  56   1              {
+  57   2                      Time[2]++;
+  58   2                      i = 0;
+  59   2                      if(Time[2] == 60)
+  60   2                      {
+  61   3                              Time[1]++;
+  62   3                              Time[2] = 0;
+  63   3                              if(Time[1] = 60)
+*** WARNING C276 IN LINE 63 OF clock.c: constant in condition expression
+  64   3                              {
+  65   4                                      Time[0]++;
+  66   4                                      Time[1] = 0;
+  67   4                                      if(Time[0] == 24)
+  68   4                                      {
+  69   5                                              Time[0] = 0;
+  70   5                                      }
+  71   4                              }
+  72   3                      }
+  73   2              }
+  74   1              if(i == 10&&Interface == 'A')
+  75   1              {
+  76   2                      DisplayInterfaceA();
+  77   2              }
+  78   1              if(i == 10&&Interface == 'B')
+  79   1              {
+  80   2                      DisplayInterfaceB();
+  81   2              }
+  82   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    331    ----
+   CONSTANT SIZE    =      4    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     17    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)

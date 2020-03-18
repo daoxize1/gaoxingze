@@ -24,34 +24,22 @@ Project File Date:  03/09/2020
 <h2>Output:</h2>
 Build target 'Target 1'
 compiling main.c...
-main.c(19): error C202: 'flag': undefined identifier
-compiling clock.c...
-clock.c(21): error C141: syntax error near '{'
-clock.c(22): error C136: invalid dimension size: [0]
-clock.c(22): error C231: 'TimeDisplay': redefinition
-clock.c(22): error C202: 'Array': undefined identifier
-clock.c(23): error C279: 'TimeDisplay': multiple initialization
-clock.c(23): error C202: 'Array': undefined identifier
-clock.c(24): error C279: 'TimeDisplay': multiple initialization
-clock.c(24): error C231: 'TimeDisplay': redefinition
-clock.c(25): error C279: 'TimeDisplay': multiple initialization
-clock.c(25): error C231: 'TimeDisplay': redefinition
-clock.c(25): error C202: 'Array': undefined identifier
-clock.c(26): error C279: 'TimeDisplay': multiple initialization
-clock.c(26): error C231: 'TimeDisplay': redefinition
-clock.c(26): error C202: 'Array': undefined identifier
-clock.c(27): error C279: 'TimeDisplay': multiple initialization
-clock.c(27): error C231: 'TimeDisplay': redefinition
-clock.c(28): error C279: 'TimeDisplay': multiple initialization
-clock.c(28): error C231: 'TimeDisplay': redefinition
-clock.c(28): error C202: 'Array': undefined identifier
-clock.c(29): error C279: 'TimeDisplay': multiple initialization
-clock.c(29): error C231: 'TimeDisplay': redefinition
-clock.c(29): error C202: 'Array': undefined identifier
-clock.c(30): error C141: syntax error near '}'
-compiling Keyboard.c...
-Keyboard.c(24): error C141: syntax error near '}'
-Target not created.
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?TIMER1INIT?DIGTUBE
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?SETTING?KEYBOARD
+*** WARNING L15: MULTIPLE CALL TO SEGMENT
+    SEGMENT: ?PR?_LCDSHOWSTR?LCD1602
+    CALLER1: ?PR?TIMER0INTERRUPT?CLOCK
+    CALLER2: ?C_C51STARTUP
+*** WARNING L15: MULTIPLE CALL TO SEGMENT
+    SEGMENT: ?PR?_UARTSENTSTRING?UART
+    CALLER1: ?PR?UARTINTERRUPT?UART
+    CALLER2: ?C_C51STARTUP
+Program Size: data=118.1 xdata=0 code=1874
+creating hex file from ".\Objects\test"...
+".\Objects\test" - 0 Error(s), 4 Warning(s).
 Build Time Elapsed:  00:00:00
 </pre>
 </body>

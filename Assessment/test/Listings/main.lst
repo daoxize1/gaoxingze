@@ -1,4 +1,4 @@
-C51 COMPILER V9.57.0.0   MAIN                                                              03/12/2020 01:00:34 PAGE 1   
+C51 COMPILER V9.57.0.0   MAIN                                                              03/18/2020 21:53:46 PAGE 1   
 
 
 C51 COMPILER V9.57.0.0, COMPILATION OF MODULE MAIN
@@ -9,30 +9,44 @@ COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE 
 line level    source
 
    1          #include <STC12C5A60S2.H>
-   2          extern void UartInit();
-   3          extern void LCDInit();
-   4          extern void ClockInit();
-   5          extern void UartSentString(char *str);
-   6          extern void LCDShowStr(unsigned char x,unsigned char y,char *str);
-   7          char Interface;
-   8          void main()
-   9          {
-  10   1              UartInit();
-  11   1              LCDInit();
-  12   1              ClockInit();
-  13   1              EA = 1;
-  14   1              TI = 0;
-  15   1              LCDShowStr(0,0,"Waiting...");
-  16   1              UartSentString("Please input password!\r\n");
-  17   1              while(1)
-  18   1              {
-  19   2                      if(flag == 1)
-*** ERROR C202 IN LINE 19 OF main.c: 'flag': undefined identifier
-  20   2                              break;
-  21   2              }
-  22   1              Interface = 'A';
-  23   1              while(1);
-  24   1      }
-  25          
+   2          extern bit flag;
+   3          extern void UartInit();
+   4          extern void LCDInit();
+   5          extern void ClockInit();
+   6          extern void UartSentString(char *str);
+   7          extern void LCDShowStr(unsigned char x,unsigned char y,char *str);
+   8          char Interface;
+   9          void main()
+  10          {
+  11   1              UartInit();
+  12   1              LCDInit();
+  13   1              ClockInit();
+  14   1              EA = 1;
+  15   1              TI = 0;
+  16   1              EX0 = 0;
+  17   1              IT0 = 1;
+  18   1              LCDShowStr(0,0,"Waiting...");
+  19   1              UartSentString("Please input password!\r\n");
+  20   1              while(1)
+  21   1              {
+  22   2                      if(flag == 1)
+  23   2                              break;
+  24   2              }
+  25   1              Interface = 'A';
+  26   1              while(1);
+  27   1      }
+  28          
 
-C51 COMPILATION COMPLETE.  0 WARNING(S),  1 ERROR(S)
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     46    ----
+   CONSTANT SIZE    =     36    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

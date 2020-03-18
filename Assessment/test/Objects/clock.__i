@@ -1,0 +1,1 @@
+"clock.c" OPTIMIZE (8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\clock.lst) OBJECT(.\Objects\clock.obj)

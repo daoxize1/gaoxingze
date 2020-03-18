@@ -20,6 +20,6 @@ void EXTInterrupt0() interrupt 0
 	if(B2 == 0)
 	{
 		times++;
-		if(times == 6)
+		//if(times == 6)
 	}
 }

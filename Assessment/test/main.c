@@ -1,4 +1,5 @@
 #include <STC12C5A60S2.H>
+extern bit flag;
 extern void UartInit();
 extern void LCDInit();
 extern void ClockInit();
@@ -12,6 +13,8 @@ void main()
 	ClockInit();
 	EA = 1;
 	TI = 0;
+	EX0 = 0;
+	IT0 = 1;
 	LCDShowStr(0,0,"Waiting...");
 	UartSentString("Please input password!\r\n");
 	while(1)

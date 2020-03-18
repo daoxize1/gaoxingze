@@ -1,4 +1,4 @@
-C51 COMPILER V9.57.0.0   KEYBOARD                                                          03/12/2020 01:00:34 PAGE 1   
+C51 COMPILER V9.57.0.0   KEYBOARD                                                          03/18/2020 21:28:11 PAGE 1   
 
 
 C51 COMPILER V9.57.0.0, COMPILATION OF MODULE KEYBOARD
@@ -30,9 +30,20 @@ line level    source
   20   1              if(B2 == 0)
   21   1              {
   22   2                      times++;
-  23   2                      if(times == 6)
+  23   2                      //if(times == 6)
   24   2              }
-*** ERROR C141 IN LINE 24 OF Keyboard.c: syntax error near '}'
   25   1      }
 
-C51 COMPILATION COMPLETE.  0 WARNING(S),  1 ERROR(S)
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     13    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
