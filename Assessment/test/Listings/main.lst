@@ -1,4 +1,4 @@
-C51 COMPILER V9.57.0.0   MAIN                                                              03/18/2020 21:53:46 PAGE 1   
+C51 COMPILER V9.57.0.0   MAIN                                                              03/19/2020 22:16:30 PAGE 1   
 
 
 C51 COMPILER V9.57.0.0, COMPILATION OF MODULE MAIN
@@ -9,43 +9,56 @@ COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE 
 line level    source
 
    1          #include <STC12C5A60S2.H>
-   2          extern bit flag;
-   3          extern void UartInit();
-   4          extern void LCDInit();
-   5          extern void ClockInit();
-   6          extern void UartSentString(char *str);
-   7          extern void LCDShowStr(unsigned char x,unsigned char y,char *str);
-   8          char Interface;
-   9          void main()
-  10          {
-  11   1              UartInit();
-  12   1              LCDInit();
-  13   1              ClockInit();
-  14   1              EA = 1;
-  15   1              TI = 0;
-  16   1              EX0 = 0;
-  17   1              IT0 = 1;
-  18   1              LCDShowStr(0,0,"Waiting...");
-  19   1              UartSentString("Please input password!\r\n");
-  20   1              while(1)
-  21   1              {
-  22   2                      if(flag == 1)
-  23   2                              break;
-  24   2              }
-  25   1              Interface = 'A';
-  26   1              while(1);
-  27   1      }
-  28          
+   2          sbit buzz = P1^7;
+   3          extern bit flag;                                //密码正确的标志
+   4          bit BuzzerOn;
+   5          extern void UartInit();
+   6          extern void LCDInit();
+   7          extern void ClockInit();
+   8          extern void UartSentString(char *str);
+   9          extern void LCDShowStr(unsigned char x,unsigned char y,char *str);
+  10          extern void KeyScan();
+  11          extern void delay(int i);
+  12          char Interface;
+  13          void main()
+  14          {
+  15   1              UartInit();
+  16   1              LCDInit();
+  17   1              ClockInit();
+  18   1              EA = 1;                                         //打开总中断
+  19   1              TI = 0;                                         //串口发送
+  20   1              IT0 = 1;
+  21   1              EX0 = 1;
+  22   1              LCDShowStr(0,0,"Waiting...");
+  23   1              UartSentString("Please input password!\r\n");
+  24   1              while(1)                                        //等待正确输入密码
+  25   1              {
+  26   2                      if(flag == 1)
+  27   2                              break;
+  28   2              }
+  29   1              Interface = 'A';                        //进入A界面
+  30   1              while(1)                                        //扫描按键
+  31   1              {
+  32   2                      KeyScan();
+  33   2                      if(BuzzerOn == 1)
+  34   2                      {
+  35   3                              buzz = ~buzz;           //我的蜂鸣器必须以这种方式发声
+  36   3                      }
+  37   2                      delay(300);
+  38   2              }
+  39   1              while(1);
+  40   1      }
+  41          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     46    ----
+   CODE SIZE        =     61    ----
    CONSTANT SIZE    =     36    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =      1    ----
    IDATA SIZE       =   ----    ----
-   BIT SIZE         =   ----    ----
+   BIT SIZE         =      1    ----
 END OF MODULE INFORMATION.
 
 

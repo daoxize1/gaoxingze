@@ -1,11 +1,13 @@
 #include <STC12C5A60S2.H>
 extern char Interface;
 char Time[3]={23,59,29};
-char Alarm[3]={00,01,00};
+char Alarm[3]={23,59,40};
 char TimeDisplay[9]={0};
 unsigned int i = 0;
+extern bit BuzzerOn;
 extern void LCDShowStr(unsigned char x,unsigned char y,char *str);
-
+extern void LCDWriteCmd(unsigned char cmd);
+extern void RingOn();
 void ClockInit()//10ms@32MHz
 {		
 	TMOD &= 0xF0;		
@@ -32,6 +34,7 @@ void CharToString(char Arra[])
 
 void DisplayInterfaceA()
 {
+	LCDWriteCmd(0x01); 
 	LCDShowStr(0,0,"A");
 	CharToString(Time);
 	LCDShowStr(0,1,TimeDisplay);
@@ -40,6 +43,7 @@ void DisplayInterfaceA()
 
 void DisplayInterfaceB()
 {
+	LCDWriteCmd(0x01); 
 	LCDShowStr(0,0,"B");
 	CharToString(Alarm);
 	LCDShowStr(0,1,TimeDisplay);
@@ -70,6 +74,10 @@ void Timer0Interrupt() interrupt 1
 				}
 			}
 		}
+	}
+	if(Time[0]==Alarm[0] && Time[1]==Alarm[1]&&Time[2]==Alarm[2])
+	{
+		BuzzerOn = 1;
 	}
 	if(i == 10&&Interface == 'A')
 	{

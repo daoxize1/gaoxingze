@@ -13,7 +13,7 @@ void UartInit(void)		//9600bps@32MHz
 	BRT = 0x30;		//设定独立波特率发生器重装值
 	AUXR |= 0x01;		//串口1选择独立波特率发生器为波特率发生器
 	AUXR |= 0x10;		//启动独立波特率发生器
-	ES = 1;
+	ES = 1;				//打开串口中断
 }
 
 void UartRecString(char Input[])

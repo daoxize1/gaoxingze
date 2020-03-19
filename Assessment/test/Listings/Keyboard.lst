@@ -1,4 +1,4 @@
-C51 COMPILER V9.57.0.0   KEYBOARD                                                          03/18/2020 21:28:11 PAGE 1   
+C51 COMPILER V9.57.0.0   KEYBOARD                                                          03/19/2020 22:14:02 PAGE 1   
 
 
 C51 COMPILER V9.57.0.0, COMPILATION OF MODULE KEYBOARD
@@ -9,34 +9,74 @@ COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Keyboard.c OPTIMIZE(8,SPEED) BRO
 line level    source
 
    1          #include <STC12C5A60S2.H>
-   2          sbit B1 = P3^4;
-   3          sbit B2 = P3^5;
-   4          sbit B3 = P3^6;
-   5          sbit B4 = P3^7;
-   6          extern char Interface;
-   7          extern unsigned char Alarm[3];
-   8          unsigned char times = 0;
-   9          void Setting()
-  10          {
-  11   1              
-  12   1      }
-  13          
-  14          void EXTInterrupt0() interrupt 0
-  15          {
-  16   1              if(B1 == 0)
-  17   1              {
-  18   2                      Interface = 'B';
-  19   2              }
-  20   1              if(B2 == 0)
-  21   1              {
-  22   2                      times++;
-  23   2                      //if(times == 6)
-  24   2              }
-  25   1      }
+   2          /*times = 1 --> hour
+   3            times = 2 --> minute
+   4            times = 3 --> second
+   5            times = 4 --> Vmax
+   6            times = 5 --> Vmin */
+   7          
+   8          sbit B1 = P3^4;
+   9          sbit B2 = P3^5;
+  10          sbit B3 = P3^6;
+  11          sbit B4 = P3^7;
+  12          extern char Interface;
+  13          extern char Alarm[3];
+  14          extern bit BuzzerOn;
+  15          unsigned char times = 0;
+  16          void delay(int i)
+  17          {
+  18   1              while(--i);
+  19   1      }
+  20          void KeyScan()
+  21          {
+  22   1              if(B1 == 0 && Interface == 'A')
+  23   1              {
+  24   2                      Interface = 'B';
+  25   2                      while(B1 == 0);
+  26   2                      delay(100000);
+  27   2              }
+  28   1              
+  29   1              if(B1 == 0 && Interface == 'B')
+  30   1              {
+  31   2                      Interface = 'A';
+  32   2                      while(B1 == 0);
+  33   2                      delay(100000);
+  34   2              }
+  35   1              
+  36   1              if(B2 == 0 && Interface == 'B')
+  37   1              {
+  38   2                      times++;
+  39   2                      if(times == 4)
+  40   2                              times = 0;
+  41   2                      while(B2 == 0);
+  42   2                      delay(100000);
+  43   2              }
+  44   1              
+  45   1              if(B3 == 0 && Interface == 'B')
+  46   1              {
+  47   2                      switch(times)
+  48   2                      {
+  49   3                              case 1:Alarm[0]++;if(Alarm[0] == 25) Alarm[0] = 0;break;
+  50   3                              case 2:Alarm[1]++;if(Alarm[1] == 61) Alarm[1] = 0;break;
+  51   3                              case 3:Alarm[2]++;if(Alarm[0] == 61) Alarm[2] = 0;break;
+  52   3                              default:break;
+  53   3                      }
+  54   2                      while(B3 == 0);
+C51 COMPILER V9.57.0.0   KEYBOARD                                                          03/19/2020 22:14:02 PAGE 2   
+
+  55   2                      delay(100000);
+  56   2              }
+  57   1              
+  58   1              if(B4 == 0 && BuzzerOn == 1)
+  59   1              {
+  60   2                      BuzzerOn = 0;
+  61   2              }
+  62   1      }
+  63          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     13    ----
+   CODE SIZE        =    143    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
