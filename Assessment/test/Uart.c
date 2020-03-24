@@ -5,6 +5,7 @@ char Input[30];
 char Password[6]={1,2,3,4,5,6};
 unsigned char step = 0;
 bit flag = 0;
+extern unsigned int Volt;
 void UartInit(void)		//9600bps@32MHz
 {
 	PCON |= 0x80;		//使能波特率倍速位SMOD

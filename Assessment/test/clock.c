@@ -37,7 +37,7 @@ void DisplayInterfaceA()
 	LCDWriteCmd(0x01); 
 	LCDShowStr(0,0,"A");
 	CharToString(Time);
-	LCDShowStr(0,1,TimeDisplay);
+	LCDShowStr(4,0,TimeDisplay);
 }
 
 
@@ -46,7 +46,7 @@ void DisplayInterfaceB()
 	LCDWriteCmd(0x01); 
 	LCDShowStr(0,0,"B");
 	CharToString(Alarm);
-	LCDShowStr(0,1,TimeDisplay);
+	LCDShowStr(4,0,TimeDisplay);
 }
 
 

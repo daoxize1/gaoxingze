@@ -1,4 +1,4 @@
-C51 COMPILER V9.57.0.0   KEYBOARD                                                          03/19/2020 22:14:02 PAGE 1   
+C51 COMPILER V9.57.0.0   KEYBOARD                                                          03/25/2020 00:35:28 PAGE 1   
 
 
 C51 COMPILER V9.57.0.0, COMPILATION OF MODULE KEYBOARD
@@ -57,12 +57,12 @@ line level    source
   47   2                      switch(times)
   48   2                      {
   49   3                              case 1:Alarm[0]++;if(Alarm[0] == 25) Alarm[0] = 0;break;
-  50   3                              case 2:Alarm[1]++;if(Alarm[1] == 61) Alarm[1] = 0;break;
-  51   3                              case 3:Alarm[2]++;if(Alarm[0] == 61) Alarm[2] = 0;break;
+  50   3                              case 2:Alarm[1]++;if(Alarm[1] == 60) Alarm[1] = 0;break;
+  51   3                              case 3:Alarm[2]++;if(Alarm[2] == 60) Alarm[2] = 0;break;
   52   3                              default:break;
   53   3                      }
   54   2                      while(B3 == 0);
-C51 COMPILER V9.57.0.0   KEYBOARD                                                          03/19/2020 22:14:02 PAGE 2   
+C51 COMPILER V9.57.0.0   KEYBOARD                                                          03/25/2020 00:35:28 PAGE 2   
 
   55   2                      delay(100000);
   56   2              }

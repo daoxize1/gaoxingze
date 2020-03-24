@@ -9,12 +9,14 @@ extern void UartSentString(char *str);
 extern void LCDShowStr(unsigned char x,unsigned char y,char *str);
 extern void KeyScan();
 extern void delay(int i);
+extern void Timer1Init();
 char Interface;
 void main()
 {
 	UartInit();
 	LCDInit();
 	ClockInit();
+	Timer1Init();
 	EA = 1;						//打开总中断
 	TI = 0;						//串口发送
 	IT0 = 1;

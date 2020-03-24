@@ -47,8 +47,8 @@ void KeyScan()
 		switch(times)
 		{
 			case 1:Alarm[0]++;if(Alarm[0] == 25) Alarm[0] = 0;break;
-			case 2:Alarm[1]++;if(Alarm[1] == 61) Alarm[1] = 0;break;
-			case 3:Alarm[2]++;if(Alarm[0] == 61) Alarm[2] = 0;break;
+			case 2:Alarm[1]++;if(Alarm[1] == 60) Alarm[1] = 0;break;
+			case 3:Alarm[2]++;if(Alarm[2] == 60) Alarm[2] = 0;break;
 			default:break;
 		}
 		while(B3 == 0);
