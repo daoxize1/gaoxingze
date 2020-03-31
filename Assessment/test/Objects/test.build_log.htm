@@ -19,12 +19,31 @@ CPU DLL:         S8051.DLL V3.113.0.0
 Dialog DLL:      DP51.DLL V2.64.0.0 
 <h2>Project:</h2>
 C:\Users\GAO\Desktop\Tools\Github\gaoxingze\Assessment\test\test.uvproj
-Project File Date:  03/24/2020
+Project File Date:  03/31/2020
 
 <h2>Output:</h2>
 Build target 'Target 1'
-compiling Keyboard.c...
 linking...
+BL51 BANKED LINKER/LOCATER V6.22.2.0 - SN: Eval Version
+COPYRIGHT ARM Germany GmbH 1987 - 2017
+".\Objects\main.obj",
+".\Objects\clock.obj",
+".\Objects\LCD1602.obj",
+".\Objects\Uart.obj",
+".\Objects\DigTube.obj",
+".\Objects\Keyboard.obj",
+".\Objects\ADC.obj",
+".\Objects\ds18b20.obj" 
+TO ".\Objects\test" 
+PRINT(".\Listings\test.m51") RAMSIZE(256) 
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?STARTDS18B20?DS18B20
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_GETDS18B20TEMP?DS18B20
+*** WARNING L15: MULTIPLE CALL TO SEGMENT
+    SEGMENT: ?PR?_UARTSENTSTRING?UART
+    CALLER1: ?PR?TIMER0INTERRUPT?CLOCK
+    CALLER2: ?PR?UARTINTERRUPT?UART
 *** WARNING L15: MULTIPLE CALL TO SEGMENT
     SEGMENT: ?PR?_LCDSHOWSTR?LCD1602
     CALLER1: ?PR?TIMER0INTERRUPT?CLOCK
@@ -33,9 +52,31 @@ linking...
     SEGMENT: ?PR?_UARTSENTSTRING?UART
     CALLER1: ?PR?UARTINTERRUPT?UART
     CALLER2: ?C_C51STARTUP
-Program Size: data=121.2 xdata=0 code=2324
-creating hex file from ".\Objects\test"...
-".\Objects\test" - 0 Error(s), 2 Warning(s).
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 08A2H BYTE (107%) *
+******************************************************************************
+Program Size: data=126.6 xdata=23 code=3019
+LINK/LOCATE RUN COMPLETE.  5 WARNING(S),  0 ERROR(S)
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?STARTDS18B20?DS18B20
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_GETDS18B20TEMP?DS18B20
+*** WARNING L15: MULTIPLE CALL TO SEGMENT
+    SEGMENT: ?PR?_UARTSENTSTRING?UART
+    CALLER1: ?PR?TIMER0INTERRUPT?CLOCK
+    CALLER2: ?PR?UARTINTERRUPT?UART
+*** WARNING L15: MULTIPLE CALL TO SEGMENT
+    SEGMENT: ?PR?_LCDSHOWSTR?LCD1602
+    CALLER1: ?PR?TIMER0INTERRUPT?CLOCK
+    CALLER2: ?C_C51STARTUP
+*** WARNING L15: MULTIPLE CALL TO SEGMENT
+    SEGMENT: ?PR?_UARTSENTSTRING?UART
+    CALLER1: ?PR?UARTINTERRUPT?UART
+    CALLER2: ?C_C51STARTUP
+*** FATAL ERROR L250: CODE SIZE LIMIT IN RESTRICTED VERSION EXCEEDED
+    MODULE:  C:\KEIL_V5\C51\LIB\C51S.LIB (-----)
+    LIMIT:   0800H BYTES
+Target not created.
 Build Time Elapsed:  00:00:00
 </pre>
 </body>

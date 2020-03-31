@@ -1,0 +1,129 @@
+C51 COMPILER V9.57.0.0   DS18B20                                                           03/31/2020 13:39:14 PAGE 1   
+
+
+C51 COMPILER V9.57.0.0, COMPILATION OF MODULE DS18B20
+OBJECT MODULE PLACED IN .\Objects\ds18b20.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE ds18b20.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\d
+                    -s18b20.lst) OBJECT(.\Objects\ds18b20.obj)
+
+line level    source
+
+   1          #include <STC12C5A60S2.H>
+   2          sbit IO_DS18B20 = P3^2;
+   3          
+   4          void DelayX10us(unsigned char t)
+   5          {
+   6   1              unsigned char j;
+   7   1              do
+   8   1              {
+   9   2                      j = 77;
+  10   2                      while (--j);
+  11   2              }while(--t);
+  12   1      }
+  13          void Delay2us()
+  14          {
+  15   1              unsigned char i;
+  16   1      
+  17   1              i = 13;
+  18   1              while (--i);
+  19   1      }
+  20          bit GetDS18B20ACK()     //初始化
+  21          {
+  22   1              bit ack;
+  23   1              EA = 0;
+  24   1              IO_DS18B20 = 0;
+  25   1              DelayX10us(65);
+  26   1              IO_DS18B20 = 1;
+  27   1              DelayX10us(6);
+  28   1              ack = IO_DS18B20;
+  29   1              while(!IO_DS18B20);
+  30   1              EA = 1;
+  31   1              return ack;
+  32   1      }
+  33          
+  34          void WriteDS18B20(unsigned char dat)
+  35          {
+  36   1              unsigned char mask;
+  37   1              EA = 0;                                                                 //关闭中断以减少对数据的影响
+  38   1              for(mask=0x01;mask!=0x00;mask<<=1)              //按位取值
+  39   1              {
+  40   2                      IO_DS18B20 = 0;
+  41   2                      Delay2us();
+  42   2                      IO_DS18B20 = (mask&dat);
+  43   2                      DelayX10us(6);
+  44   2                      IO_DS18B20 = 1;
+  45   2              }
+  46   1              EA = 1;                                                                 //打开中断
+  47   1      }
+  48          
+  49          unsigned char ReadDS18B20()                                     //读取数据
+  50          {
+  51   1              unsigned char mask;
+  52   1              unsigned char dat;
+  53   1              EA = 0;                                                                 //关闭中断以减少对数据的影响
+  54   1              for(mask=0x01;mask!=0x00;mask<<=1)              //按位取值
+C51 COMPILER V9.57.0.0   DS18B20                                                           03/31/2020 13:39:14 PAGE 2   
+
+  55   1              {
+  56   2                      IO_DS18B20 = 0;
+  57   2                      Delay2us();
+  58   2                      IO_DS18B20 = 1;
+  59   2                      Delay2us();
+  60   2                      if(IO_DS18B20 == 1)
+  61   2                              dat |= mask;
+  62   2                      else
+  63   2                              dat &= ~mask;
+  64   2                      DelayX10us(6);
+  65   2              }
+  66   1              
+  67   1              EA = 1;                                                                 //打开中断
+  68   1              
+  69   1              return dat;
+  70   1              
+  71   1      }
+  72          
+  73          bit StartDS18B20()                                              //判断是否启动成功
+  74          {
+  75   1              bit ack;
+  76   1              
+  77   1              ack = GetDS18B20ACK();
+  78   1              if(ack == 0)
+  79   1              {
+  80   2                      WriteDS18B20(0xCC); 
+  81   2                      WriteDS18B20(0x44); 
+  82   2              }
+  83   1              
+  84   1              return ~ack;
+  85   1      }
+  86          
+  87          bit GetDS18B20Temp(int *temp)                   //获取温度
+  88          {
+  89   1              bit ack;
+  90   1              unsigned char LSB,MSB;                          //高8位 低8位
+  91   1              
+  92   1              ack = GetDS18B20ACK();
+  93   1              if(ack == 0)
+  94   1              {
+  95   2                      WriteDS18B20(0xCC); 
+  96   2                      WriteDS18B20(0xBE);
+  97   2                      LSB = ReadDS18B20();
+  98   2                      MSB = ReadDS18B20();
+  99   2                      *temp = ((int)MSB<<8)+LSB;              //把两个八位数据合成位16位的
+ 100   2              }
+ 101   1              return ~ack;
+ 102   1      }
+ 103          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    197    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       3
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       3
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,4 +1,4 @@
-C51 COMPILER V9.57.0.0   LCD1602                                                           03/18/2020 21:28:10 PAGE 1   
+C51 COMPILER V9.57.0.0   LCD1602                                                           03/31/2020 14:52:35 PAGE 1   
 
 
 C51 COMPILER V9.57.0.0, COMPILATION OF MODULE LCD1602
@@ -14,95 +14,120 @@ line level    source
    4          sbit LCD_EN = P2^7;
    5          sbit LCD_RS = P2^6;
    6          sbit LCD_WR = P2^5;
-   7          
-   8          void LCDInit();
-   9          void LCDWaitReady();
-  10          void LCDWriteDat(unsigned char dat);
-  11          void LCDWriteCmd(unsigned char cmd);
-  12          void LCDSetCursor(unsigned char x,unsigned char y);
-  13          void LCDShowStr(unsigned char x,unsigned char y,char *str);
-  14          void LCDDelay();
-  15          
-  16          void LCDDelay()
-  17          {
-  18   1              _nop_();_nop_();_nop_();_nop_(); _nop_();_nop_();_nop_();_nop_();
-  19   1      }
-  20          
-  21          void LCDInit()
-  22          {
-  23   1              LCDWriteCmd(0x38);
-  24   1              LCDWriteCmd(0x0c);
-  25   1              LCDWriteCmd(0x06);
-  26   1              LCDWriteCmd(0x01);
-  27   1      }
-  28          
-  29          void LCDWaitReady()
-  30          {
-  31   1              unsigned char sta;
-  32   1              LCD_DB = 0xff;
-  33   1              LCD_RS = 0;
-  34   1              LCD_WR = 1;
-  35   1              do
-  36   1              {
-  37   2                      LCD_EN = 1;
-  38   2                      sta = LCD_DB;
-  39   2                      LCDDelay();
-  40   2                      LCD_EN = 0;
-  41   2              }while(sta & 0x80);
-  42   1      }
-  43          
-  44          void LCDWriteCmd(unsigned char cmd)
-  45          {
-  46   1              LCDWaitReady();
-  47   1              LCD_RS = 0;
-  48   1              LCD_WR = 0;
-  49   1              LCD_DB = cmd;
-  50   1              LCDDelay();
-  51   1              LCD_EN = 1;
-  52   1              LCD_EN = 0;
-  53   1      }
-  54          
-C51 COMPILER V9.57.0.0   LCD1602                                                           03/18/2020 21:28:10 PAGE 2   
+   7          extern unsigned int Volt;
+   8          
+   9          char xdata VoltString[6]={0};
+  10          
+  11          void LCDInit();
+  12          void LCDWaitReady();
+  13          void LCDWriteDat(unsigned char dat);
+  14          void LCDWriteCmd(unsigned char cmd);
+  15          void LCDSetCursor(unsigned char x,unsigned char y);
+  16          void LCDShowStr(unsigned char x,unsigned char y,char *str);
+  17          void LCDShowChar(unsigned char x,unsigned char y,char ch);
+  18          
+  19          void LCDDelay();
+  20          void VoltToString(unsigned int Volt);
+  21          
+  22          
+  23          void LCDDelay()
+  24          {
+  25   1              _nop_();_nop_();_nop_();_nop_(); _nop_();_nop_();_nop_();_nop_();
+  26   1      }
+  27          
+  28          void LCDInit()
+  29          {
+  30   1              LCDWriteCmd(0x38);
+  31   1              LCDWriteCmd(0x0c);
+  32   1              LCDWriteCmd(0x06);
+  33   1              LCDWriteCmd(0x01);
+  34   1      }
+  35          
+  36          void LCDWaitReady()
+  37          {
+  38   1              unsigned char sta;
+  39   1              LCD_DB = 0xff;
+  40   1              LCD_RS = 0;
+  41   1              LCD_WR = 1;
+  42   1              do
+  43   1              {
+  44   2                      LCD_EN = 1;
+  45   2                      sta = LCD_DB;
+  46   2                      LCDDelay();
+  47   2                      LCD_EN = 0;
+  48   2              }while(sta & 0x80);
+  49   1      }
+  50          
+  51          void LCDWriteCmd(unsigned char cmd)
+  52          {
+  53   1              LCDWaitReady();
+  54   1              LCD_RS = 0;
+C51 COMPILER V9.57.0.0   LCD1602                                                           03/31/2020 14:52:35 PAGE 2   
 
-  55          void LCDWriteDat(unsigned char dat)
-  56          {
-  57   1              LCDWaitReady();
-  58   1              LCD_RS = 1;
-  59   1              LCD_WR = 0;
-  60   1              LCD_DB = dat;
-  61   1              LCDDelay();
-  62   1              LCD_EN = 1;
-  63   1              LCD_EN = 0;
-  64   1      }
-  65          
-  66          void LCDSetCursor(unsigned char x,unsigned char y)
-  67          {
-  68   1              unsigned char addr;
-  69   1              if(y == 0)
-  70   1                      addr = 0x00 + x;
-  71   1              else
-  72   1                      addr = 0x40 + x;
-  73   1              LCDWriteCmd(addr | 0x80);
-  74   1      }
-  75          
-  76          void LCDShowStr(unsigned char x,unsigned char y,char *str)
-  77          {
-  78   1              LCDSetCursor(x,y);
-  79   1              while(*str!='\0')
-  80   1              {
-  81   2                      LCDWriteDat(*str++);
-  82   2              }
-  83   1      }
+  55   1              LCD_WR = 0;
+  56   1              LCD_DB = cmd;
+  57   1              LCDDelay();
+  58   1              LCD_EN = 1;
+  59   1              LCD_EN = 0;
+  60   1      }
+  61          
+  62          void LCDWriteDat(unsigned char dat)
+  63          {
+  64   1              LCDWaitReady();
+  65   1              LCD_RS = 1;
+  66   1              LCD_WR = 0;
+  67   1              LCD_DB = dat;
+  68   1              LCDDelay();
+  69   1              LCD_EN = 1;
+  70   1              LCD_EN = 0;
+  71   1      }
+  72          
+  73          void LCDSetCursor(unsigned char x,unsigned char y)
+  74          {
+  75   1              unsigned char addr;
+  76   1              if(y == 0)
+  77   1                      addr = 0x00 + x;
+  78   1              else
+  79   1                      addr = 0x40 + x;
+  80   1              LCDWriteCmd(addr | 0x80);
+  81   1      }
+  82          
+  83          void LCDShowStr(unsigned char x,unsigned char y,char *str)
+  84          {
+  85   1              LCDSetCursor(x,y);
+  86   1              while(*str!='\0')
+  87   1              {
+  88   2                      LCDWriteDat(*str++);
+  89   2              }
+  90   1      }
+  91          
+  92          void LCDShowChar(unsigned char x,unsigned char y,char ch)
+  93          {
+  94   1              LCDSetCursor(x,y);
+  95   1              LCDWriteDat(ch);
+  96   1      }
+  97          
+  98          void VoltToString(unsigned int Volt)
+  99          {
+ 100   1              unsigned char i = 0;
+ 101   1              VoltString[0] = Volt/1000 + '0';
+ 102   1              VoltString[1] = '.';
+ 103   1              VoltString[2] = Volt%1000/100 + '0';
+ 104   1              VoltString[3] = Volt%100/10 + '0';
+ 105   1              VoltString[4] = '\0';
+ 106   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    146    ----
+   CODE SIZE        =    241    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =   ----    ----
+   XDATA SIZE       =      6    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =   ----       3
+   DATA SIZE        =   ----       4
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
+C51 COMPILER V9.57.0.0   LCD1602                                                           03/31/2020 14:52:35 PAGE 3   
+
 END OF MODULE INFORMATION.
 
 

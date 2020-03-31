@@ -1,4 +1,4 @@
-C51 COMPILER V9.57.0.0   DIGTUBE                                                           03/25/2020 00:30:27 PAGE 1   
+C51 COMPILER V9.57.0.0   DIGTUBE                                                           03/31/2020 15:05:31 PAGE 1   
 
 
 C51 COMPILER V9.57.0.0, COMPILATION OF MODULE DIGTUBE
@@ -13,71 +13,62 @@ line level    source
    3          sbit AddrB = P1^1;
    4          sbit AddrC = P1^2;
    5          extern unsigned int ReadADValue(unsigned char cmd);
-   6          unsigned char k = 0;
-   7          unsigned char j = 0;
-   8          unsigned int Volt;
-   9          unsigned char code LedChar[]={
-  10                  0x3f,0x06,0x5b,0x4f,
-  11              0x66,0x6d,0x7d,0x07,
-  12              0x7f,0x6f,0x77,0x7c,
-  13              0x39,0x5e,0x79,0x71
-  14                  };
-  15          
-  16          void Timer1Init(void)           //2毫秒@32MHz
-  17          {
-  18   1              AUXR &= 0xBF;           //定时器时钟12T模式
-  19   1              TMOD &= 0x0F;           //设置定时器模式
-  20   1              TMOD |= 0x10;           //设置定时器模式
-  21   1              TL1 = 0x2B;             //设置定时初值
-  22   1              TH1 = 0xEB;             //设置定时初值
-  23   1              TF1 = 0;                //清除TF1标志
-  24   1              TR1 = 1;                //定时器1开始计时
-  25   1              ET1 = 1;
-  26   1      }
-  27          
-  28          void DigDisplay()
-  29          {
-  30   1              if(j==50)
-  31   1              {
-  32   2                      Volt = ReadADValue(0x94);
-  33   2                      j = 0;
-  34   2              }
-  35   1              P2 = 0x00;
-  36   1              /*switch(k)
-  37   1              {
-  38   1                      case 0:AddrA = 1;AddrB = 1;AddrC = 1;P2 = LedChar[Volt/1000];k++;break;
-  39   1                      case 1:AddrA = 0;AddrB = 1;AddrC = 1;P2 = LedChar[Volt%1000/100];k++;break;
-  40   1                      case 2:AddrA = 1;AddrB = 0;AddrC = 1;P2 = LedChar[Volt%1000%100/10];k++;break;
-  41   1                      case 3:AddrA = 0;AddrB = 0;AddrC = 1;P2 = LedChar[Volt%1000%100%10];k=0;break;
-  42   1                      default:break;
-  43   1              }*/
-  44   1              
-  45   1              switch(k)
-  46   1              {
-  47   2                      case 0:AddrA = 1;AddrB = 1;AddrC = 1;P2 = LedChar[Volt%10];k++;break;
-  48   2                      case 1:AddrA = 0;AddrB = 1;AddrC = 1;P2 = LedChar[Volt%100/10];k++;break;
-  49   2                      case 2:AddrA = 1;AddrB = 0;AddrC = 1;P2 = LedChar[Volt%1000/100];k++;break;
-  50   2                      case 3:AddrA = 0;AddrB = 0;AddrC = 1;P2 = LedChar[Volt/1000];k=0;break;
-  51   2                      default:break;
-  52   2              }
-  53   1              
-  54   1      }
-C51 COMPILER V9.57.0.0   DIGTUBE                                                           03/25/2020 00:30:27 PAGE 2   
+   6          
+   7          unsigned char k = 0;
+   8          unsigned char j = 0;
+   9          unsigned int Volt;
+  10          unsigned char code LedChar[]={
+  11                  0x3f,0x06,0x5b,0x4f,
+  12              0x66,0x6d,0x7d,0x07,
+  13              0x7f,0x6f,0x77,0x7c,
+  14              0x39,0x5e,0x79,0x71
+  15                  };
+  16          
+  17          void Timer1Init(void)           //2毫秒@32MHz
+  18          {
+  19   1              AUXR &= 0xBF;           //定时器时钟12T模式
+  20   1              TMOD &= 0x0F;           //设置定时器模式
+  21   1              TMOD |= 0x10;           //设置定时器模式
+  22   1              TL1 = 0x2B;             //设置定时初值
+  23   1              TH1 = 0xEB;             //设置定时初值
+  24   1              TF1 = 0;                //清除TF1标志
+  25   1              TR1 = 1;                //定时器1开始计时
+  26   1              ET1 = 1;
+  27   1      }
+  28          
+  29          void DigDisplay()
+  30          {
+  31   1              if(j==50)
+  32   1              {
+  33   2                      Volt = ReadADValue(0x94);
+  34   2                      j = 0;
+  35   2              }
+  36   1              P2 = 0x00;
+  37   1              switch(k)
+  38   1              {
+  39   2                      case 0:AddrA = 1;AddrB = 1;AddrC = 1;P2 = LedChar[Volt%10];k++;break;
+  40   2                      case 1:AddrA = 0;AddrB = 1;AddrC = 1;P2 = LedChar[Volt%100/10];k++;break;
+  41   2                      case 2:AddrA = 1;AddrB = 0;AddrC = 1;P2 = LedChar[Volt%1000/100];k++;break;
+  42   2                      case 3:AddrA = 0;AddrB = 0;AddrC = 1;P2 = (LedChar[Volt/1000] | 0x80);k=0;break; //加上小数点
+  43   2                      default:break;
+  44   2              }
+  45   1              
+  46   1      }
+  47          
+  48          void interruptLED() interrupt 3
+  49          {
+  50   1              TL1 = 0x2B;
+  51   1              TH1 = 0xEB;
+  52   1          P0 = 0x00;
+  53   1          DigDisplay();
+  54   1              j++;
+C51 COMPILER V9.57.0.0   DIGTUBE                                                           03/31/2020 15:05:31 PAGE 2   
 
-  55          
-  56          void interruptLED() interrupt 3
-  57          {
-  58   1              TL1 = 0x2B;
-  59   1              TH1 = 0xEB;
-  60   1              //TR1 = 1;
-  61   1          P0 = 0x00;
-  62   1          DigDisplay();
-  63   1              j++;
-  64   1      }
+  55   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    279    ----
+   CODE SIZE        =    281    ----
    CONSTANT SIZE    =     16    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
