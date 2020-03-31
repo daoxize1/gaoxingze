@@ -4,7 +4,6 @@
 ".\Objects\Uart.obj",
 ".\Objects\DigTube.obj",
 ".\Objects\Keyboard.obj",
-".\Objects\ADC.obj",
-".\Objects\ds18b20.obj" 
+".\Objects\ADC.obj" 
 TO ".\Objects\test" 
 PRINT(".\Listings\test.m51") RAMSIZE(256) 
