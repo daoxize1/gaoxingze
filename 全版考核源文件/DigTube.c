@@ -30,7 +30,8 @@ void DigDisplay()
 {
 	if(j==50)
 	{
-		Volt = ReadADValue(0x94);
+		Volt = ReadADValue(0x94); 
+		Volt = Volt*5/4.096;					//	AD值转电压值（AD值为0-4096）
 		j = 0;
 	}
 	P2 = 0x00;

@@ -1,4 +1,4 @@
-C51 COMPILER V9.57.0.0   DIGTUBE                                                           03/31/2020 15:05:31 PAGE 1   
+C51 COMPILER V9.57.0.0   DIGTUBE                                                           04/01/2020 16:08:50 PAGE 1   
 
 
 C51 COMPILER V9.57.0.0, COMPILATION OF MODULE DIGTUBE
@@ -40,35 +40,36 @@ line level    source
   30          {
   31   1              if(j==50)
   32   1              {
-  33   2                      Volt = ReadADValue(0x94);
-  34   2                      j = 0;
-  35   2              }
-  36   1              P2 = 0x00;
-  37   1              switch(k)
-  38   1              {
-  39   2                      case 0:AddrA = 1;AddrB = 1;AddrC = 1;P2 = LedChar[Volt%10];k++;break;
-  40   2                      case 1:AddrA = 0;AddrB = 1;AddrC = 1;P2 = LedChar[Volt%100/10];k++;break;
-  41   2                      case 2:AddrA = 1;AddrB = 0;AddrC = 1;P2 = LedChar[Volt%1000/100];k++;break;
-  42   2                      case 3:AddrA = 0;AddrB = 0;AddrC = 1;P2 = (LedChar[Volt/1000] | 0x80);k=0;break; //加上小数点
-  43   2                      default:break;
-  44   2              }
-  45   1              
-  46   1      }
-  47          
-  48          void interruptLED() interrupt 3
-  49          {
-  50   1              TL1 = 0x2B;
-  51   1              TH1 = 0xEB;
-  52   1          P0 = 0x00;
-  53   1          DigDisplay();
-  54   1              j++;
-C51 COMPILER V9.57.0.0   DIGTUBE                                                           03/31/2020 15:05:31 PAGE 2   
+  33   2                      Volt = ReadADValue(0x94); 
+  34   2                      Volt = Volt*5/4.096;                                    //      AD值转电压值（AD值为0-4096）
+  35   2                      j = 0;
+  36   2              }
+  37   1              P2 = 0x00;
+  38   1              switch(k)
+  39   1              {
+  40   2                      case 0:AddrA = 1;AddrB = 1;AddrC = 1;P2 = LedChar[Volt%10];k++;break;
+  41   2                      case 1:AddrA = 0;AddrB = 1;AddrC = 1;P2 = LedChar[Volt%100/10];k++;break;
+  42   2                      case 2:AddrA = 1;AddrB = 0;AddrC = 1;P2 = LedChar[Volt%1000/100];k++;break;
+  43   2                      case 3:AddrA = 0;AddrB = 0;AddrC = 1;P2 = (LedChar[Volt/1000] | 0x80);k=0;break; //加上小数点
+  44   2                      default:break;
+  45   2              }
+  46   1              
+  47   1      }
+  48          
+  49          void interruptLED() interrupt 3
+  50          {
+  51   1              TL1 = 0x2B;
+  52   1              TH1 = 0xEB;
+  53   1          P0 = 0x00;
+  54   1          DigDisplay();
+C51 COMPILER V9.57.0.0   DIGTUBE                                                           04/01/2020 16:08:50 PAGE 2   
 
-  55   1      }
+  55   1              j++;
+  56   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    281    ----
+   CODE SIZE        =    314    ----
    CONSTANT SIZE    =     16    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

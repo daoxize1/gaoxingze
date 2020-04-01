@@ -14,8 +14,8 @@ extern char Alarm[3];				//闹钟时间
 extern bit BuzzerOn;				//表示蜂鸣器的状态
 
 unsigned char times = 0;			//表示正在修改的数据
-unsigned char VH = 5;				//电压上报上限
-unsigned char VL = 3;				//电压上报下限
+unsigned char VH = 6;				//电压上报上限
+unsigned char VL = 4;				//电压上报下限
 
 void delay(int i)					//类似于消抖
 {
