@@ -108,14 +108,17 @@ void Timer0Interrupt() interrupt 1
 	{
 		Time[2]++;
 		i = 0;
+		
 		if(Time[2] == 60)
 		{
 			Time[1]++;
 			Time[2] = 0;
-			if(Time[1] = 60)
+			
+			if(Time[1] == 60)
 			{
 				Time[0]++;
 				Time[1] = 0;
+				
 				if(Time[0] == 24)
 				{
 					Time[0] = 0;
