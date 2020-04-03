@@ -17,7 +17,7 @@ unsigned char times = 0;			//表示正在修改的数据
 unsigned char VH = 6;				//电压上报上限
 unsigned char VL = 4;				//电压上报下限
 
-void delay(int i)					//类似于消抖
+void delay(unsigned int i)					//类似于消抖
 {
 	while(--i);
 }
@@ -50,7 +50,7 @@ void KeyScan()						//判断按下了哪个键
 	{
 		switch(times)
 		{
-			case 1:Alarm[0]++;if(Alarm[0] == 25) Alarm[0] = 0;break;
+			case 1:Alarm[0]++;if(Alarm[0] == 24) Alarm[0] = 0;break;
 			case 2:Alarm[1]++;if(Alarm[1] == 60) Alarm[1] = 0;break;
 			case 3:Alarm[2]++;if(Alarm[2] == 60) Alarm[2] = 0;break;
 			case 4:VH++;if(VH == 10) VH = 0;break;

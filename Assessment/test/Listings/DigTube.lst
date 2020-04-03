@@ -1,4 +1,4 @@
-C51 COMPILER V9.57.0.0   DIGTUBE                                                           04/01/2020 16:08:50 PAGE 1   
+C51 COMPILER V9.57.0.0   DIGTUBE                                                           04/03/2020 16:55:46 PAGE 1   
 
 
 C51 COMPILER V9.57.0.0, COMPILATION OF MODULE DIGTUBE
@@ -62,7 +62,7 @@ line level    source
   52   1              TH1 = 0xEB;
   53   1          P0 = 0x00;
   54   1          DigDisplay();
-C51 COMPILER V9.57.0.0   DIGTUBE                                                           04/01/2020 16:08:50 PAGE 2   
+C51 COMPILER V9.57.0.0   DIGTUBE                                                           04/03/2020 16:55:46 PAGE 2   
 
   55   1              j++;
   56   1      }
