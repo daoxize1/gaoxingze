@@ -1,6 +1,6 @@
 #include <STC12C5A60S2.H>
 char Time[3]={23,59,29};
-char Alarm[3]={23,59,40};
+char Alarm[3]={00,01,00};
 char TimeDisplay[9]={0};
 char xdata UartString[17]={0};
 unsigned int i = 0;

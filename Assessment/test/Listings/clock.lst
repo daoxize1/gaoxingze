@@ -1,4 +1,4 @@
-C51 COMPILER V9.57.0.0   CLOCK                                                             04/01/2020 16:04:57 PAGE 1   
+C51 COMPILER V9.57.0.0   CLOCK                                                             04/03/2020 16:39:27 PAGE 1   
 
 
 C51 COMPILER V9.57.0.0, COMPILATION OF MODULE CLOCK
@@ -10,7 +10,7 @@ line level    source
 
    1          #include <STC12C5A60S2.H>
    2          char Time[3]={23,59,29};
-   3          char Alarm[3]={23,59,40};
+   3          char Alarm[3]={00,01,00};
    4          char TimeDisplay[9]={0};
    5          char xdata UartString[17]={0};
    6          unsigned int i = 0;
@@ -62,7 +62,7 @@ line level    source
   52   1              TimeDisplay[8] = '\0';
   53   1      }
   54          
-C51 COMPILER V9.57.0.0   CLOCK                                                             04/01/2020 16:04:57 PAGE 2   
+C51 COMPILER V9.57.0.0   CLOCK                                                             04/03/2020 16:39:27 PAGE 2   
 
   55          void DisplayInterfaceA()                                //œ‘ æΩÁ√ÊA
   56          {
@@ -126,7 +126,7 @@ line level    source
  114   3                              Time[2] = 0;
  115   3                              if(Time[1] = 60)
 *** WARNING C276 IN LINE 115 OF clock.c: constant in condition expression
-C51 COMPILER V9.57.0.0   CLOCK                                                             04/01/2020 16:04:57 PAGE 3   
+C51 COMPILER V9.57.0.0   CLOCK                                                             04/03/2020 16:39:27 PAGE 3   
 
  116   3                              {
  117   4                                      Time[0]++;
